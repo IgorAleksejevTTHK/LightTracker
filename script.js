@@ -63,7 +63,7 @@ function checkRussian() {
 
     const result = document.getElementById("russianResult");
 
-    // Võrdleme kasutaja vastust sõna õige venekeelse tõlkega.
+    // Võrdleme kasutaja vastust sõna õige venekeelse tõlkega...
     if (answer === currentEstonian.ru.toLowerCase()) {
         result.textContent = "Õige vastus!";
         result.className = "correct";
