@@ -1,4 +1,5 @@
-// Sõnavara massiiv sisaldab hajusrakenduste teemaga seotud sõnu
+
+// Sõnade massiiv sisaldab hajusrakenduste teemaga seotud sõnu
 // ning nende tõlkeid eesti ja vene keeles.
 const words = [
     { et: "arvuti", ru: "компьютер" },
@@ -15,35 +16,105 @@ const words = [
     { et: "protokoll", ru: "протокол" }
 ];
 
-// Muutujad hoiavad hetkel kasutatavaid juhuslikke sõnu.
-let currentEstonian;
-let currentRussian;
+// Hoiame meeles hetkel valitud sõnu mõlemas kontrollis.
+let currentEstonian = words[0];
+let currentRussian = words[0];
 
 
-// Funktsioon valib massiivist juhusliku sõna.
-// Math.random() annab juhusliku arvu ja Math.floor() teeb sellest täisarvu.
-function getRandomWord() {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    return words[randomIndex];
+// Lisab kõik sõnad eestikeelsesse valikusse.
+function createEstonianList() {
+    const select = document.getElementById("estonianSelect");
+
+    words.forEach((item, index) => {
+        const option = document.createElement("option");
+
+        option.value = index;
+        option.textContent = item.et;
+
+        select.appendChild(option);
+    });
 }
 
 
-// Genereerib mõlema tabeli jaoks uued juhuslikud sõnad.
-function generateWords() {
+// Lisab kõik sõnad venekeelsesse valikusse.
+function createRussianList() {
+    const select = document.getElementById("russianSelect");
 
-    // Valime esimese sõna Eesti → Vene kontrolli jaoks.
-    currentEstonian = getRandomWord();
+    words.forEach((item, index) => {
+        const option = document.createElement("option");
 
-    // Valime teise sõna Vene → Eesti kontrolli jaoks.
-    currentRussian = getRandomWord();
+        option.value = index;
+        option.textContent = item.ru;
 
-    // Kuvame eestikeelse sõna esimeses tabeli veerus.
+        select.appendChild(option);
+    });
+}
+
+
+// Kui kasutaja valib eestikeelse sõna nimekirjast,
+// kuvatakse see lehel ja määratakse kontrollitavaks sõnaks.
+function selectEstonianWord() {
+    const index = document.getElementById("estonianSelect").value;
+
+    if (index === "") {
+        return;
+    }
+
+    currentEstonian = words[index];
+
     document.getElementById("estonianWord").textContent =
         currentEstonian.et;
 
-    // Kuvame venekeelse sõna teises tabeli veerus.
+    document.getElementById("russianAnswer").value = "";
+    document.getElementById("russianResult").textContent = "";
+}
+
+
+// Kui kasutaja valib venekeelse sõna nimekirjast,
+// kuvatakse see lehel ja määratakse kontrollitavaks sõnaks.
+function selectRussianWord() {
+    const index = document.getElementById("russianSelect").value;
+
+    if (index === "") {
+        return;
+    }
+
+    currentRussian = words[index];
+
     document.getElementById("russianWord").textContent =
         currentRussian.ru;
+
+    document.getElementById("estonianAnswer").value = "";
+    document.getElementById("estonianResult").textContent = "";
+}
+
+
+// Genereerib mõlemasse tabeli veergu juhusliku sõna.
+function generateWords() {
+
+    // Valime juhusliku sõna massiivist.
+    const randomEstonianIndex =
+        Math.floor(Math.random() * words.length);
+
+    const randomRussianIndex =
+        Math.floor(Math.random() * words.length);
+
+    currentEstonian = words[randomEstonianIndex];
+    currentRussian = words[randomRussianIndex];
+
+    // Näitame juhuslikke sõnu.
+    document.getElementById("estonianWord").textContent =
+        currentEstonian.et;
+
+    document.getElementById("russianWord").textContent =
+        currentRussian.ru;
+
+    // Märgime ka vastava sõna valiknimekirjas.
+    document.getElementById("estonianSelect").value =
+        randomEstonianIndex;
+
+    document.getElementById("russianSelect").value =
+        randomRussianIndex;
 
     // Puhastame vanad vastused ja tulemused.
     document.getElementById("russianAnswer").value = "";
@@ -54,31 +125,37 @@ function generateWords() {
 }
 
 
-// Kontrollib, kas kasutaja sisestatud vene keelne vastus on õige.
+// Kontrollib eestikeelse sõna venekeelset vastust.
 function checkRussian() {
 
-    const answer = document.getElementById("russianAnswer").value
+    const answer = document
+        .getElementById("russianAnswer")
+        .value
         .trim()
         .toLowerCase();
 
     const result = document.getElementById("russianResult");
 
-    // Võrdleme kasutaja vastust sõna õige venekeelse tõlkega...
+    // Võrdleme kasutaja vastust õige tõlkega.
     if (answer === currentEstonian.ru.toLowerCase()) {
         result.textContent = "Õige vastus!";
         result.className = "correct";
     } else {
-        result.textContent = "Vale vastus. Õige vastus: "
-            + currentEstonian.ru;
+        result.textContent =
+            "Vale vastus. Õige vastus: " +
+            currentEstonian.ru;
+
         result.className = "wrong";
     }
 }
 
 
-// Kontrollib, kas kasutaja sisestatud eestikeelne vastus on õige.
+// Kontrollib venekeelse sõna eestikeelset vastust.
 function checkEstonian() {
 
-    const answer = document.getElementById("estonianAnswer").value
+    const answer = document
+        .getElementById("estonianAnswer")
+        .value
         .trim()
         .toLowerCase();
 
@@ -89,12 +166,19 @@ function checkEstonian() {
         result.textContent = "Õige vastus!";
         result.className = "correct";
     } else {
-        result.textContent = "Vale vastus. Õige vastus: "
-            + currentRussian.et;
+        result.textContent =
+            "Vale vastus. Õige vastus: " +
+            currentRussian.et;
+
         result.className = "wrong";
     }
 }
 
 
-// Loome lehe laadimisel kohe esimesed juhuslikud sõnad.
+// Loome mõlemad sõnade nimekirjad lehe laadimisel.
+createEstonianList();
+createRussianList();
+
+// Kuvame alguses juhuslikud sõnad.
 generateWords();
+

@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="et">
 <head>
@@ -10,6 +11,7 @@
 <body>
 
 <div class="container">
+
     <h1>Hajusrakenduste sõnavara kontroll</h1>
 
     <table>
@@ -20,10 +22,19 @@
 
         <tr>
             <td>
+                <h3>Vali eestikeelne sõna</h3>
+
+                <select id="estonianSelect" onchange="selectEstonianWord()">
+                    <option value="">-- Vali sõna --</option>
+                </select>
+
                 <h2 id="estonianWord">-</h2>
 
-                <input type="text" id="russianAnswer"
-                       placeholder="Sisesta venekeelne vaste">
+                <input
+                        type="text"
+                        id="russianAnswer"
+                        placeholder="Sisesta venekeelne vaste"
+                >
 
                 <button onclick="checkRussian()">Kontrolli</button>
 
@@ -31,10 +42,19 @@
             </td>
 
             <td>
+                <h3>Vali venekeelne sõna</h3>
+
+                <select id="russianSelect" onchange="selectRussianWord()">
+                    <option value="">-- Выбери слово --</option>
+                </select>
+
                 <h2 id="russianWord">-</h2>
 
-                <input type="text" id="estonianAnswer"
-                       placeholder="Sisesta eestikeelne vaste">
+                <input
+                        type="text"
+                        id="estonianAnswer"
+                        placeholder="Sisesta eestikeelne vaste"
+                >
 
                 <button onclick="checkEstonian()">Kontrolli</button>
 
@@ -46,8 +66,10 @@
     <button class="random-button" onclick="generateWords()">
         Uued juhuslikud sõnad
     </button>
+
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
